@@ -93,4 +93,5 @@ jobs:
         with:
           name: Release APK
           path: TMessagesProj/build/outputs/apk/afat/release/*.apk
+
           
