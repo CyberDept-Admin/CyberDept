@@ -6,6 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      # Збільшуємо пам'ять для Java, щоб не було StackOverflowError
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8"
       CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
       CCACHE_NOHASHDIR: "true"
       CCACHE_MAXSIZE: "10G"
@@ -14,7 +16,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Ми прибрали submodules: recursive, бо саме на них виникає помилка
 
       - uses: DamianReeves/write-file-action@master
         with:
@@ -67,11 +68,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        # Якщо assembleAfatRelease знову видасть помилку, зміни на assembleRelease
-        run: ./gradlew assembleAfatRelease
+        # Додаємо --no-daemon для економії пам'яті
+        run: ./gradlew assembleAfatRelease --no-daemon
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: Release APK
-          path: TMessagesProj/build/outputs/apk/afat/release/*.apk
+          # Використовуємо універсальний шлях, щоб точно знайти файл
+          path: "**/*.apk"
