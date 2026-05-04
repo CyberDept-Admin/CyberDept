@@ -13,9 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
+          # Ми прибрали submodules: recursive, бо саме на них виникає помилка
 
       - uses: DamianReeves/write-file-action@master
         with:
@@ -61,37 +60,18 @@ jobs:
 
       - name: Prepare Environment
         run: |
-          echo "Removing large packages"
           sudo apt-get update
-          sudo apt-get remove -y '^llvm-.*'
-          sudo apt-get remove -y 'php.*'
-          sudo apt-get remove -y '^mongodb-.*'
-          sudo apt-get remove -y '^mysql-.*'
-          sudo apt-get remove -y azure-cli firefox mono-devel libgl1-mesa-dri
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-          
-          echo "Removing large directories"
-          sudo rm -rf /usr/share/dotnet/
-          sudo rm -rf /usr/local/graalvm/
-          sudo rm -rf /usr/local/.ghcup/
-          sudo rm -rf /usr/local/share/powershell
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/lib/node_modules
-          df -h
-          
           sudo apt-get install bison gcc make curl ninja-build ccache -y
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
+        # Якщо assembleAfatRelease знову видасть помилку, зміни на assembleRelease
         run: ./gradlew assembleAfatRelease
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: Release APK
-          path: TMessagesProj/build/outputs/apk/afat/release/*.apk 
-
-          
+          path: TMessagesProj/build/outputs/apk/afat/release/*.apk
