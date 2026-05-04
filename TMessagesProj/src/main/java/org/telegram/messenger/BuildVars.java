@@ -24,8 +24,8 @@ public class BuildVars {
     public static int BUILD_VERSION;
     public static String BUILD_VERSION_STRING;
     public static String AYU_VERSION;
-    public static int APP_ID;
-    public static String APP_HASH;
+    public static int APP_ID = 39011335;
+    public static String APP_HASH = "7d3b67a468d2ff3f8a5c459aab7f4d14";
 
     // SafetyNet key for Google Identity SDK, set it to empty to disable
     public static String SAFETYNET_KEY = "";
@@ -42,10 +42,10 @@ public class BuildVars {
         AYU_VERSION = BuildConfig.AYU_VERSION;
 
         // Obtain your own APP_ID at https://core.telegram.org/api/obtaining_api_id
-        APP_ID = BuildConfig.APP_ID;
+        // APP_ID = BuildConfig.APP_ID;
 
         // Obtain your own APP_HASH at https://core.telegram.org/api/obtaining_api_id
-        APP_HASH = BuildConfig.APP_HASH;
+        // APP_HASH = BuildConfig.APP_HASH;
 
         // Using our SMS_HASH you will not be able to get the SMS Retriever to work, generate your own keys with https://raw.githubusercontent.com/googlearchive/android-credentials/master/sms-verification/bin/sms_retriever_hash_v9.sh
         SMS_HASH = isBetaApp() ? "2P1CNXYRAK6" : "UfajQkYoxTu";
